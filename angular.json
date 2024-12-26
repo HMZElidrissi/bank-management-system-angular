@@ -92,5 +92,9 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "0d697789-6168-4c66-aa10-b5ff0f66fe6b",
+    "packageManager": "yarn"
   }
 }
