@@ -39,21 +39,7 @@ export class SigninComponent implements OnInit {
   ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
   }
-
-  // onSubmit() {
-  //   if (this.signinForm.valid) {
-  //     this.authService.signin(this.signinForm.value).subscribe({
-  //       next: () => {
-  //         this.router.navigateByUrl(this.returnUrl);
-  //       },
-  //       error: (error) => {
-  //         console.error('Signin failed:', error);
-  //         // Handle error (show message to user)
-  //       }
-  //     });
-  //   }
-  // }
-  // signin.component.ts
+  // TODO: remove debug code after testing
   onSubmit() {
     console.log('Form submitted', this.signinForm.value);
     if (this.signinForm.valid) {
