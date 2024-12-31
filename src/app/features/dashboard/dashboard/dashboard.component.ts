@@ -4,6 +4,7 @@ import { AuthenticationResponse } from '@core/models/auth.models';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
   templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent {

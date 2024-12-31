@@ -24,6 +24,7 @@
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.9",
     "@tailwindcss/typography": "^0.5.15",
+    "lucide-angular": "^0.469.0",
     "ng-openapi-gen": "^0.52.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
