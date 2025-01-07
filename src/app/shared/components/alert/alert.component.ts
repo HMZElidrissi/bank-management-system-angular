@@ -6,11 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div
-      class="rounded-lg border p-4 mb-4"
-      [class]="alertClasses"
-      role="alert"
-    >
+    <div class="rounded-lg border p-4 mb-4" [class]="alertClasses" role="alert">
       {{ message }}
     </div>
   `

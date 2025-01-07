@@ -36,7 +36,7 @@ export class SigninComponent implements OnInit {
 
   isFieldInvalid(fieldName: string): boolean {
     const field = this.signinForm.get(fieldName);
-    return field ? (field.invalid && field.touched) : false;
+    return field ? field.invalid && field.touched : false;
   }
 
   onSubmit() {

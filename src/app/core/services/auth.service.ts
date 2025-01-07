@@ -21,36 +21,46 @@ export class AuthService {
   }
 
   signup(request: SignupRequest): Observable<AuthenticationResponse> {
-    return this.http.post<AuthenticationResponse>(`${this.apiUrl}/signup`, request, {
-      withCredentials: true
-    }).pipe(
-      tap(response => {
-        localStorage.setItem('currentUser', JSON.stringify(response));
-        this.currentUserSubject.next(response);
+    return this.http
+      .post<AuthenticationResponse>(`${this.apiUrl}/signup`, request, {
+        withCredentials: true
       })
-    );
+      .pipe(
+        tap((response) => {
+          localStorage.setItem('currentUser', JSON.stringify(response));
+          this.currentUserSubject.next(response);
+        })
+      );
   }
 
   signin(request: SigninRequest): Observable<AuthenticationResponse> {
-    return this.http.post<AuthenticationResponse>(`${this.apiUrl}/signin`, request, {
-      withCredentials: true
-    }).pipe(
-      tap(response => {
-        localStorage.setItem('currentUser', JSON.stringify(response));
-        this.currentUserSubject.next(response);
+    return this.http
+      .post<AuthenticationResponse>(`${this.apiUrl}/signin`, request, {
+        withCredentials: true
       })
-    );
+      .pipe(
+        tap((response) => {
+          localStorage.setItem('currentUser', JSON.stringify(response));
+          this.currentUserSubject.next(response);
+        })
+      );
   }
 
   signout(): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/signout`, {}, {
-      withCredentials: true
-    }).pipe(
-      tap(() => {
-        localStorage.removeItem('currentUser');
-        this.currentUserSubject.next(null);
-      })
-    );
+    return this.http
+      .post<void>(
+        `${this.apiUrl}/signout`,
+        {},
+        {
+          withCredentials: true
+        }
+      )
+      .pipe(
+        tap(() => {
+          localStorage.removeItem('currentUser');
+          this.currentUserSubject.next(null);
+        })
+      );
   }
 
   getCurrentUser(): AuthenticationResponse | null {
@@ -64,5 +74,11 @@ export class AuthService {
   hasRole(role: string): boolean {
     const user = this.getCurrentUser();
     return user ? user.role === role : false;
+  }
+
+  hasAnyRole(requiredRoles: string[]): boolean {
+    const user = this.getCurrentUser();
+    const hasRole = user ? requiredRoles.includes(user.role) : false;
+    return hasRole;
   }
 }

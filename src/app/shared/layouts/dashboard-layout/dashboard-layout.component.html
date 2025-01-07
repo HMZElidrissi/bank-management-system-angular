@@ -1,0 +1,138 @@
+<div class="flex flex-col min-h-screen bg-gray-50">
+  <!-- Top Navigation Bar -->
+  <div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center justify-between h-16 px-4 lg:px-6">
+        <div class="flex items-center gap-4">
+          <!-- Logo -->
+          <div class="flex items-center group">
+            <lucide-icon
+              [img]="Circle"
+              [size]="36"
+              class="text-indigo-600 group-hover:text-indigo-700 transition-colors"
+            ></lucide-icon>
+            <span
+              class="ml-2 text-xl font-bold bg-gradient-to-r from-indigo-600 to-indigo-800 bg-clip-text text-transparent"
+              >ACME</span
+            >
+          </div>
+
+          <!-- Navigation Links -->
+          <nav class="hidden md:flex ml-6 space-x-1">
+            <a
+              *ngFor="let item of navigationItems"
+              [routerLink]="item.path"
+              routerLinkActive="bg-indigo-50 text-indigo-600"
+              [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+              class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-md transition-colors relative group"
+            >
+              {{ item.label }}
+              <div
+                class="absolute bottom-0 left-0 w-full h-0.5 bg-indigo-600 scale-x-0 group-hover:scale-x-100 transition-transform origin-left"
+              ></div>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Right Side: User Menu -->
+        <div class="relative flex items-center gap-4">
+          <!-- Notifications -->
+          <button
+            class="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100 transition-colors"
+          >
+            <lucide-icon [img]="Bell" [size]="20"></lucide-icon>
+          </button>
+
+          <!-- User Menu -->
+          <div class="relative">
+            <button
+              (click)="toggleUserMenu()"
+              class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
+              <!-- User Avatar -->
+              <div
+                class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-medium"
+              >
+                {{ currentUser?.name?.charAt(0) }}
+              </div>
+              <span>{{ currentUser?.name }}</span>
+              <lucide-icon [img]="ChevronDown" [size]="16" class="text-gray-400"></lucide-icon>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div
+              *ngIf="isUserMenuOpen"
+              class="absolute right-0 mt-2 w-56 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100"
+            >
+              <div class="px-4 py-3">
+                <p class="text-sm text-gray-900">Signed in as</p>
+                <p class="text-sm font-medium text-gray-900 truncate">{{ currentUser?.email }}</p>
+              </div>
+              <div class="py-1">
+                <a
+                  routerLink="/dashboard/profile"
+                  class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <lucide-icon
+                    [img]="User"
+                    [size]="16"
+                    class="mr-3 text-gray-400 group-hover:text-indigo-500"
+                  ></lucide-icon>
+                  Profile
+                </a>
+                <a
+                  routerLink="/dashboard/settings"
+                  class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <lucide-icon
+                    [img]="Settings"
+                    [size]="16"
+                    class="mr-3 text-gray-400 group-hover:text-indigo-500"
+                  ></lucide-icon>
+                  Settings
+                </a>
+              </div>
+              <div class="py-1">
+                <button
+                  (click)="signout()"
+                  class="group flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <lucide-icon
+                    [img]="LogOut"
+                    [size]="16"
+                    class="mr-3 text-gray-400 group-hover:text-red-500"
+                  ></lucide-icon>
+                  Sign Out
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="flex-1">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+        <!-- Dynamic Content -->
+        <div class="p-6 sm:p-8">
+          <router-outlet></router-outlet>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div
+          *ngIf="loading"
+          class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+        >
+          <div class="bg-white rounded-lg p-4 shadow-xl">
+            <div
+              class="animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

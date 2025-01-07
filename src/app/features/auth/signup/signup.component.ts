@@ -9,13 +9,7 @@ import { Circle, Loader2, LucideAngularModule } from 'lucide-angular';
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    RouterLink,
-    CommonModule,
-    AlertComponent,
-    LucideAngularModule
-  ],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule, AlertComponent, LucideAngularModule],
   templateUrl: './signup.component.html'
 })
 export class SignupComponent implements OnInit {
@@ -30,17 +24,17 @@ export class SignupComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.signupForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [
-        Validators.required,
-        Validators.minLength(8),
-      ]],
-      confirmPassword: ['', Validators.required]
-    }, {
-      validators: this.passwordMatchValidator
-    });
+    this.signupForm = this.fb.group(
+      {
+        name: ['', [Validators.required, Validators.minLength(2)]],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', Validators.required]
+      },
+      {
+        validators: this.passwordMatchValidator
+      }
+    );
   }
 
   ngOnInit() {
@@ -61,7 +55,7 @@ export class SignupComponent implements OnInit {
 
   isFieldInvalid(fieldName: string): boolean {
     const field = this.signupForm.get(fieldName);
-    return field ? (field.invalid && field.touched) : false;
+    return field ? field.invalid && field.touched : false;
   }
 
   getPasswordError(): string {
@@ -78,25 +72,27 @@ export class SignupComponent implements OnInit {
       this.isSubmitting = true;
       this.error = null;
 
-      this.authService.signup({
-        name: this.signupForm.value.name,
-        email: this.signupForm.value.email,
-        password: this.signupForm.value.password
-      }).subscribe({
-        next: () => {
-          this.router.navigateByUrl(this.returnUrl);
-        },
-        error: (error) => {
-          this.isSubmitting = false;
-          if (error.status === 409) {
-            this.error = 'Email already exists';
-          } else if (error.error?.message) {
-            this.error = error.error.message;
-          } else {
-            this.error = 'An unexpected error occurred. Please try again later.';
+      this.authService
+        .signup({
+          name: this.signupForm.value.name,
+          email: this.signupForm.value.email,
+          password: this.signupForm.value.password
+        })
+        .subscribe({
+          next: () => {
+            this.router.navigateByUrl(this.returnUrl);
+          },
+          error: (error) => {
+            this.isSubmitting = false;
+            if (error.status === 409) {
+              this.error = 'Email already exists';
+            } else if (error.error?.message) {
+              this.error = error.error.message;
+            } else {
+              this.error = 'An unexpected error occurred. Please try again later.';
+            }
           }
-        }
-      });
+        });
     } else {
       this.signupForm.markAllAsTouched();
     }
