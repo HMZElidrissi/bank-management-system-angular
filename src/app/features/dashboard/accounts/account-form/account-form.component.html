@@ -1,0 +1,98 @@
+<div class="max-w-2xl mx-auto space-y-6">
+  <!-- Header -->
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900">{{ isEditMode ? 'Edit' : 'Create' }} Account</h2>
+    <p class="mt-1 text-sm text-gray-500">
+      {{ isEditMode ? 'Update account details' : 'Create a new bank account' }}
+    </p>
+  </div>
+
+  <!-- Error Alert -->
+  <div *ngIf="error" class="p-4 rounded-md bg-red-50 border border-red-200">
+    <p class="text-sm text-red-700">{{ error }}</p>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    <!-- User Selection -->
+    <div>
+      <label for="userId" class="block text-sm font-medium text-gray-700">User</label>
+      <select
+        id="userId"
+        formControlName="userId"
+        [attr.disabled]="isEditMode"
+        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
+        [class.bg-gray-100]="isEditMode">
+        <option value="">Select a user</option>
+        <option *ngFor="let user of users" [value]="user.id">
+          {{ user.name }} ({{ user.email }})
+        </option>
+      </select>
+      <div *ngIf="accountForm.get('userId')?.invalid && accountForm.get('userId')?.touched"
+           class="mt-1 text-sm text-red-600">
+        Please select a user
+      </div>
+    </div>
+
+    <!-- Initial Balance -->
+    <div>
+      <label for="initialBalance" class="block text-sm font-medium text-gray-700">
+        {{ isEditMode ? 'Balance' : 'Initial Balance' }}
+      </label>
+      <div class="mt-1 relative rounded-md shadow-sm">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <span class="text-gray-500 sm:text-sm">$</span>
+        </div>
+        <input
+          type="number"
+          id="initialBalance"
+          formControlName="initialBalance"
+          class="mt-1 block w-full pl-7 pr-4 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          placeholder="0.00"
+          step="0.01"
+          min="0">
+      </div>
+      <div *ngIf="accountForm.get('initialBalance')?.invalid && accountForm.get('initialBalance')?.touched"
+           class="mt-1 text-sm text-red-600">
+        Balance must be zero or greater
+      </div>
+    </div>
+
+    <!-- Account Status (Edit mode only) -->
+    <div *ngIf="isEditMode">
+      <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+      <select
+        id="status"
+        formControlName="status"
+        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md">
+        <option [value]="AccountStatus.ACTIVE">Active</option>
+        <option [value]="AccountStatus.BLOCKED">Blocked</option>
+      </select>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="flex items-center justify-end space-x-4">
+      <button
+        type="button"
+        routerLink="/dashboard/accounts"
+        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Cancel
+      </button>
+      <button
+        type="submit"
+        [disabled]="accountForm.invalid || submitting"
+        class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed">
+        <span *ngIf="submitting" class="inline-flex items-center">
+          <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Saving...
+        </span>
+        <span *ngIf="!submitting">
+          {{ isEditMode ? 'Update' : 'Create' }} Account
+        </span>
+      </button>
+    </div>
+  </form>
+</div>

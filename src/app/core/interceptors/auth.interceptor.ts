@@ -14,7 +14,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   // }
   if (!req.withCredentials) {
     req = req.clone({
-      withCredentials: true
+      withCredentials: true,
+      headers: req.headers.set('X-Requested-With', 'XMLHttpRequest')
     });
   }
   return next(req);

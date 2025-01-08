@@ -46,7 +46,7 @@ export const navigationItems = [
   },
   {
     label: 'Account Management',
-    path: '/dashboard/admin/accounts',
+    path: '/dashboard/accounts',
     roles: ['ADMIN']
   },
   {
