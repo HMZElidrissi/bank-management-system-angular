@@ -20,7 +20,7 @@
           <!-- Navigation Links -->
           <nav class="hidden md:flex ml-6 space-x-1">
             <a
-              *ngFor="let item of navigationItems"
+              *ngFor="let item of visibleNavigationItems"
               [routerLink]="item.path"
               routerLinkActive="bg-indigo-50 text-indigo-600"
               [routerLinkActiveOptions]="{ exact: item.exact ?? false }"

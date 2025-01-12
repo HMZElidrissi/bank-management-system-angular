@@ -9,7 +9,9 @@ interface NavigationItem {
   label: string;
   path: string;
   exact?: boolean;
+  roles: string[];
 }
+
 import {
   Bell,
   ChevronDown,
@@ -19,6 +21,7 @@ import {
   Settings,
   User
 } from 'lucide-angular';
+import { navigationItems } from '@shared/config/navigation';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -31,18 +34,14 @@ export class DashboardLayoutComponent {
   currentUser: AuthenticationResponse | null = null;
   isAuthenticated = false;
   isUserMenuOpen = false;
+  visibleNavigationItems: NavigationItem[] = [];
   protected readonly Circle = Circle;
   protected readonly Bell = Bell;
   protected readonly User = User;
   protected readonly Settings = Settings;
   protected readonly LogOut = LogOut;
   protected readonly ChevronDown = ChevronDown;
-  protected navigationItems: NavigationItem[] = [
-    { label: 'Dashboard', path: '/dashboard', exact: true },
-    { label: 'Accounts', path: '/dashboard/accounts' },
-    { label: 'Transactions', path: '/dashboard/transactions' },
-    { label: 'Loans', path: '/dashboard/loans' }
-  ];
+  protected allNavigationItems: NavigationItem[] = navigationItems;
 
   constructor(
     private authService: AuthService,
@@ -52,7 +51,20 @@ export class DashboardLayoutComponent {
     this.authService.currentUser$.subscribe((user) => {
       this.currentUser = user;
       this.isAuthenticated = !!user;
+      this.updateNavigationItems();
     });
+  }
+
+  private updateNavigationItems() {
+    if (!this.currentUser) {
+      this.visibleNavigationItems = [];
+      return;
+    }
+
+    const userRole = this.currentUser.role;
+    this.visibleNavigationItems = this.allNavigationItems.filter((item) =>
+      item.roles.includes(userRole)
+    );
   }
 
   toggleUserMenu() {
