@@ -1,0 +1,13 @@
+{
+  "invalidCredentials": "Invalid email or password",
+  "emailExists": "Email already exists",
+  "invalidEmail": "Invalid email format",
+  "requiredName": "Name is required",
+  "requiredEmail": "Email is required",
+  "requiredPassword": "Password is required",
+  "requiredConfirmPassword": "Please confirm your password",
+  "shortName": "Name must be at least 2 characters",
+  "shortPassword": "Password must be at least 8 characters",
+  "passwordMismatch": "Passwords do not match",
+  "unexpectedError": "An unexpected error occurred. Please try again later."
+}

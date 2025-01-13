@@ -1,0 +1,30 @@
+{
+  "validUser": {
+    "email": "test@example.com",
+    "password": "password123",
+    "name": "Test User",
+    "role": "USER"
+  },
+  "invalidUser": {
+    "email": "invalid@example.com",
+    "password": "wrongpassword",
+    "name": "Invalid User"
+  },
+  "newUser": {
+    "name": "New Test User",
+    "email": "newuser@example.com",
+    "password": "Password123!",
+    "confirmPassword": "Password123!"
+  },
+  "invalidSignup": {
+    "name": "T",
+    "email": "invalid-email",
+    "password": "123",
+    "confirmPassword": "456"
+  },
+  "existingUser": {
+    "name": "Existing User",
+    "email": "existing@example.com",
+    "password": "password123"
+  }
+}

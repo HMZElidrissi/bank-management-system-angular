@@ -17,6 +17,7 @@ export class SignupComponent implements OnInit {
   error: string | null = null;
   isSubmitting = false;
   returnUrl: string = '/dashboard';
+  protected readonly Loader2 = Loader2;
 
   constructor(
     private fb: FormBuilder,
@@ -97,7 +98,4 @@ export class SignupComponent implements OnInit {
       this.signupForm.markAllAsTouched();
     }
   }
-
-  protected readonly Circle = Circle;
-  protected readonly Loader2 = Loader2;
 }
