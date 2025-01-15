@@ -1,0 +1,147 @@
+<div class="max-w-2xl mx-auto space-y-6">
+  <!-- Header -->
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900">{{ isEditMode ? 'Edit' : 'Create' }} User</h2>
+    <p class="mt-1 text-sm text-gray-500">
+      {{ isEditMode ? 'Update user information' : 'Create a new user account' }}
+    </p>
+  </div>
+
+  <!-- Error Alert -->
+  <div *ngIf="error" class="p-4 rounded-md bg-red-50 border border-red-200">
+    <p class="text-sm text-red-700">{{ error }}</p>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    <!-- Name -->
+    <div>
+      <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        [class.border-red-300]="userForm.get('name')?.invalid && userForm.get('name')?.touched">
+      <p *ngIf="getErrorMessage('name')" class="mt-1 text-sm text-red-600">
+        {{ getErrorMessage('name') }}
+      </p>
+    </div>
+
+    <!-- Email -->
+    <div>
+      <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        [class.border-red-300]="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+      <p *ngIf="getErrorMessage('email')" class="mt-1 text-sm text-red-600">
+        {{ getErrorMessage('email') }}
+      </p>
+    </div>
+
+    <!-- Password (only for create mode) -->
+    <div *ngIf="!isEditMode">
+      <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        [class.border-red-300]="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+      <p *ngIf="getErrorMessage('password')" class="mt-1 text-sm text-red-600">
+        {{ getErrorMessage('password') }}
+      </p>
+    </div>
+
+    <!-- Age -->
+    <div>
+      <label for="age" class="block text-sm font-medium text-gray-700">Age</label>
+      <input
+        type="number"
+        id="age"
+        formControlName="age"
+        min="18"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        [class.border-red-300]="userForm.get('age')?.invalid && userForm.get('age')?.touched">
+      <p *ngIf="getErrorMessage('age')" class="mt-1 text-sm text-red-600">
+        {{ getErrorMessage('age') }}
+      </p>
+    </div>
+
+    <!-- Monthly Income -->
+    <div>
+      <label for="monthlyIncome" class="block text-sm font-medium text-gray-700">Monthly Income</label>
+      <div class="mt-1 relative rounded-md shadow-sm">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <span class="text-gray-500 sm:text-sm">$</span>
+        </div>
+        <input
+          type="number"
+          id="monthlyIncome"
+          formControlName="monthlyIncome"
+          min="0"
+          step="0.01"
+          class="mt-1 block w-full pl-7 pr-12 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          [class.border-red-300]="userForm.get('monthlyIncome')?.invalid && userForm.get('monthlyIncome')?.touched">
+      </div>
+      <p *ngIf="getErrorMessage('monthlyIncome')" class="mt-1 text-sm text-red-600">
+        {{ getErrorMessage('monthlyIncome') }}
+      </p>
+    </div>
+
+    <!-- Credit Score -->
+    <div>
+      <label for="creditScore" class="block text-sm font-medium text-gray-700">Credit Score</label>
+      <input
+        type="number"
+        id="creditScore"
+        formControlName="creditScore"
+        min="300"
+        max="850"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        [class.border-red-300]="userForm.get('creditScore')?.invalid && userForm.get('creditScore')?.touched">
+      <p *ngIf="getErrorMessage('creditScore')" class="mt-1 text-sm text-red-600">
+        {{ getErrorMessage('creditScore') }}
+      </p>
+    </div>
+
+    <!-- Role -->
+    <div>
+      <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+      <select
+        id="role"
+        formControlName="role"
+        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md sm:text-sm">
+        <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+      </select>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="flex items-center justify-end space-x-4">
+      <button
+        type="button"
+        routerLink="/dashboard/users"
+        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Cancel
+      </button>
+      <button
+        type="submit"
+        [disabled]="userForm.invalid || submitting"
+        class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed">
+        <span *ngIf="submitting" class="inline-flex items-center">
+          <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Saving...
+        </span>
+        <span *ngIf="!submitting">
+          {{ isEditMode ? 'Update' : 'Create' }} User
+        </span>
+      </button>
+    </div>
+  </form>
+</div>

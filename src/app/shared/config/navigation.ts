@@ -41,7 +41,7 @@ export const navigationItems = [
   // Admin specific routes
   {
     label: 'User Management',
-    path: '/dashboard/admin/users',
+    path: '/dashboard/users',
     roles: ['ADMIN']
   },
   {

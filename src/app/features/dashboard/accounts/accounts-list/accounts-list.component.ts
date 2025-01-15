@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-angular';
+import { PaginatedComponent } from '../../../../shared/components/paginated/paginated.component';
 
 @Component({
   selector: 'app-accounts-list',
@@ -21,19 +22,11 @@ import {
   imports: [CommonModule, RouterModule, LucideAngularModule],
   templateUrl: './accounts-list.component.html'
 })
-export class AccountsListComponent implements OnInit {
+export class AccountsListComponent extends PaginatedComponent implements OnInit {
   accounts: Account[] = [];
   loading = false;
   error: string | null = null;
   isAdmin = false;
-
-  // Pagination
-  currentPage = 0;
-  pageSize = 10;
-  totalElements = 0;
-  totalPages = 0;
-  sortBy = 'id';
-  sortDir = 'asc';
 
   protected readonly PlusCircle = PlusCircle;
   protected readonly Edit = Edit;
@@ -49,14 +42,15 @@ export class AccountsListComponent implements OnInit {
     private accountService: AccountService,
     private authService: AuthService
   ) {
+    super();
     this.isAdmin = this.authService.hasRole('ADMIN');
   }
 
   ngOnInit(): void {
-    this.loadAccounts();
+    this.loadData();
   }
 
-  loadAccounts(): void {
+  loadData(): void {
     this.loading = true;
     this.error = null;
 
@@ -93,28 +87,11 @@ export class AccountsListComponent implements OnInit {
     }
   }
 
-  changePage(page: number): void {
-    if (page >= 0 && page < this.totalPages) {
-      this.currentPage = page;
-      this.loadAccounts();
-    }
-  }
-
-  updateSort(column: string): void {
-    if (this.sortBy === column) {
-      this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.sortBy = column;
-      this.sortDir = 'asc';
-    }
-    this.loadAccounts();
-  }
-
   updateAccountStatus(id: number, status: AccountStatus): void {
     this.loading = true;
     this.accountService.updateAccountStatus(id, { amount: 0, status }).subscribe({
       next: () => {
-        this.loadAccounts();
+        this.loadData();
       },
       error: (error) => {
         this.error = 'Failed to update account status';
@@ -130,7 +107,7 @@ export class AccountsListComponent implements OnInit {
     this.loading = true;
     this.accountService.deleteAccount(id).subscribe({
       next: () => {
-        this.loadAccounts();
+        this.loadData();
       },
       error: (error) => {
         this.error = 'Failed to delete account';
@@ -149,24 +126,5 @@ export class AccountsListComponent implements OnInit {
       default:
         return 'text-gray-600 bg-gray-50';
     }
-  }
-
-  get pageNumbers(): number[] {
-    const pageNumbers: number[] = [];
-    const totalDisplayPages = 5;
-    const halfDisplay = Math.floor(totalDisplayPages / 2);
-
-    let startPage = Math.max(0, this.currentPage - halfDisplay);
-    let endPage = Math.min(this.totalPages - 1, startPage + totalDisplayPages - 1);
-
-    if (endPage - startPage + 1 < totalDisplayPages) {
-      startPage = Math.max(0, endPage - totalDisplayPages + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
-    }
-
-    return pageNumbers;
   }
 }
