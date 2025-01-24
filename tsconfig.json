@@ -8,8 +8,10 @@
       "@core/*": ["app/core/*"],
       "@shared/*": ["app/shared/*"],
       "@features/*": ["app/features/*"],
-      "@environments/*": ["environments/*"]
+      "@environments/*": ["environments/*"],
+      "@store/*": ["app/store/*"],
     },
+    "useDefineForClassFields": false,
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,

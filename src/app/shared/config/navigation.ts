@@ -50,8 +50,8 @@ export const navigationItems = [
     roles: ['ADMIN']
   },
   {
-    label: 'Loan Management',
-    path: '/dashboard/admin/loans',
+    label: 'Transaction Management',
+    path: '/dashboard/transactions',
     roles: ['ADMIN']
   },
   {
